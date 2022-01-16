@@ -1,0 +1,7 @@
+dofile(ModPath .. "classes/States/ingamecrewmate.lua")
+Hooks:PostHook(GameStateMachine, "init", "AmongUs_GSM", function(self)
+    local ingame_crewmate = IngameCrewmateState:new(self)
+    log("[AmonGU] IngameCrewmateState:new()")
+    --local ingame_crewmate_func = callback(nil, ingame_crewmate, "default_transition")
+    self:add_transition(self._states.ingame_civilian, ingame_crewmate, self._states.ingame_civilian.default_transition)
+end)
