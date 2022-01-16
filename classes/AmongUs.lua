@@ -27,6 +27,9 @@ function AmongUs:init(custom_rules)
     self:_init_hooks()
     self:_init_rules(rules)
 
+    AmongUs.TweakData:init()
+    AmongUs.GM:init()
+
     self._devs = {
         76561198043882024
     }
@@ -40,42 +43,43 @@ end
 
 function AmongUs:_init_rules(rules)
     self._tasks = {
-        short = rules.short_tasks,
-        long = rules.long_tasks,
-        common = rules.common_tasks
+        short = rules.short_tasks, --Amount of short tasks
+        long = rules.long_tasks, --Amount of long tasks
+        common = rules.common_tasks --Amount of common tasks
     }
 
     self._emergency = {
-        cooldown = rules.emergency_cooldown,
-        duration = rules.emergency_duration,
-        meetings = rules.emergency_meetings,
-        voting_time = rules.voting_time,
-        anon_voting = rules.anon_voting
+        cooldown = rules.emergency_cooldown, --Amount of time between emergencies
+        duration = rules.emergency_duration, --Amount of disscussion time before the voting starts
+        meetings = rules.emergency_meetings, --Amount of times the emergency meeting can happen per player
+        voting_time = rules.voting_time, --Amount of time (in seconds) that the players have to vote on who to vote out.
+        anon_voting = rules.anon_voting --Can players see who voted for who?
     }
 
     self._gameplay = {
-        visual_tasks = rules.visual_tasks,
-        task_bar_updates = rules.task_bar_updates,
-        max_players = rules.max_players,
-        min_players = rules.min_players,
-        imposter_count = rules.impostor_count,
-        kill_cooldown = rules.kill_cooldown,
-        player_speed_multiplier = rules.player_speed_multiplier
+        visual_tasks = rules.visual_tasks, --Can the players see other players complete certain tasks?
+        task_bar_updates = rules.task_bar_updates, --Can the players see the task bar update in real time?
+        max_players = rules.max_players, --Max amount of players that can join the game
+        min_players = rules.min_players, --Min amount of players to start the game
+        imposter_count = rules.impostor_count, --Maximum amount of players that can be impostors
+        kill_cooldown = rules.kill_cooldown, --Cooldown between killing players (in seconds)
+        player_speed_multiplier = rules.player_speed_multiplier --Speed multiplier for players
     }
 end
 
 function AmongUs:_init_hooks()
-    --[[
+
     local map = BeardLib.Frameworks.Map:GetModByName("Mogus")
     local mod_path = map:GetPath()
     log(tostring(mod_path))
 
     self._hooks = {
-        --"classes/AmongUsHUD"
+        "classes/AmongUs_TweakData",
+        "classes/AmongUs_GameManager",
 
     }
 
-    self._elements = {
+    --[[self._elements = {
         "WeaponSwitch"
     }
 
@@ -84,10 +88,10 @@ function AmongUs:_init_hooks()
             dofile(mod_path .. "classes/Editor/Editor" .. element .. ".lua")
             table.insert(BLE._config.MissionElements, "Element".. element)
         end
-    end
+    end]]
 
     for _, hook in pairs(self._hooks) do
         dofile(mod_path .. hook .. ".lua")
         log("Included script ", hook)
-    end]]--
+    end
 end

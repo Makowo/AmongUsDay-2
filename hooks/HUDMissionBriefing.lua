@@ -1,0 +1,11 @@
+Hooks:PostHook(HUDMissionBriefing, "set_player_slot", "AmongUs_HudMission_Briefing", function(self, nr, params)
+    local current_name = params.name
+    local peer_id = params.peer_id
+
+    local data = {
+        id = peer_id,
+        name = current_name
+    }
+
+    SkyLib.CODZ:_create_new_player(data)
+end)
