@@ -21,6 +21,7 @@ function HUDAMONGUS:init(parent)
 end
 
 function HUDAMONGUS:set_visible(state)
+    if state == true then self:update_task_panel() end
     self._task_bar:set_visible(state)
     self._task_panel:set_visible(state)
 end
@@ -90,7 +91,7 @@ function HUDAMONGUS:create_panel(parent)
     self._task_panel = parent:panel({
         name = "task_panel",
         visible = true,
-        layer = 25,
+        layer = 1,
         w = parent:w() / 4,
         h = parent:h() / 4,
         x = 0,
@@ -109,21 +110,47 @@ function HUDAMONGUS:create_panel(parent)
     self._task_panel:set_top(self._task_bar:bottom())
 end
 
---Add text to the panel, one for each task
-function HUDAMONGUS:add_task_text(text)
-    self._task_panel_text = self._task_panel:text({
-        name = "task_panel_text",
-        layer = 3,
-        text = "aaa",
-        font = HUDAMONGUS.DEFAULT_FONT,
-        font_size = self._task_panel:h() * 0.8,
-        color = Color.white,
-        align = "center",
-        vertical = "center",
-        w = self._task_panel:w(),
-        h = self._task_panel:h(),
-        x = 0,
-        y = 0,
-    })
+function HUDAMONGUS:update_task_panel()
+    local player_tasks = AmongUs.GM._players[managers.network:session():local_peer():id()].tasks
+
+    for task_type, amount in pairs(player_tasks) do
+        for i = 1, #amount, 1 do
+            self:create_task_text(i, task_type, player_tasks[task_type][i])
+        end
+    end
 end
 
+--Creates the task text
+function HUDAMONGUS:create_task_text(amount, task_type, player_tasks)
+    self._task_text = self._task_text or {}
+    self._lazy_amount = self._lazy_amount and self._lazy_amount + 1 or amount
+    local text = player_tasks.location .. ": " .. player_tasks.name .. " (" .. player_tasks.progress .. "/" .. player_tasks.max_progress .. ")"
+
+    self._task_text[self._lazy_amount] = self._task_panel:text({
+        name = "task_text" .. self._lazy_amount,
+        layer = 3,
+        text = text or "ERROR",
+        font = HUDAMONGUS.DEFAULT_FONT,
+        font_size = 24,
+        color = Color.black,
+        align = "left",
+        vertical = "left",
+        h = 28,
+    })
+
+    AmongUs.GM._players[managers.network:session():local_peer():id()].tasks[task_type][amount].text_id = self._task_text[self._lazy_amount]
+
+    --thx shiny hoppip for :text_rect()
+    local x, y, w, h = self._task_text[self._lazy_amount]:text_rect()
+    if self._lazy_amount ~= 1 then
+        --can't run this everytime because otherwise it'll be smaller than the earlier task
+        if self._task_panel:w() < w then
+            self._task_panel:set_w(w)
+        end
+
+        self._task_text[self._lazy_amount]:set_top(self._task_text[self._lazy_amount-1]:bottom())
+        self._task_panel:set_h(self._task_text[self._lazy_amount]:bottom())
+    else --first task
+        self._task_panel:set_w(w)
+    end
+end

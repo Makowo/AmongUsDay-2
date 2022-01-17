@@ -19,8 +19,8 @@ function AmongUs:init(custom_rules)
 
         visual_tasks = custom_rules and custom_rules.visual_tasks or true,
         task_bar_updates = custom_rules and custom_rules.task_bar_updates or true,
-        short_tasks = custom_rules and custom_rules.short_tasks or 5,
-        long_tasks = custom_rules and custom_rules.long_tasks or 2,
+        short_tasks = custom_rules and custom_rules.short_tasks or 1,
+        long_tasks = custom_rules and custom_rules.long_tasks or 1,
         common_tasks = custom_rules and custom_rules.common_tasks or 1
     }
 
@@ -37,11 +37,12 @@ function AmongUs:init(custom_rules)
     self._helpers = {
 
     }
-
+PrintTable(AmongUs)
     log("[AmongUs] Gamemode fully initialized.")
 end
 
 function AmongUs:_init_rules(rules)
+    log("AmongUs:_init_rules()")
     self._tasks = {
         short = rules.short_tasks, --Amount of short tasks
         long = rules.long_tasks, --Amount of long tasks
@@ -65,6 +66,8 @@ function AmongUs:_init_rules(rules)
         kill_cooldown = rules.kill_cooldown, --Cooldown between killing players (in seconds)
         player_speed_multiplier = rules.player_speed_multiplier --Speed multiplier for players
     }
+    log("Self TASKS: ")
+    PrintTable(AmongUs._tasks)
 end
 
 function AmongUs:_init_hooks()
@@ -76,6 +79,7 @@ function AmongUs:_init_hooks()
     self._hooks = {
         "classes/AmongUs_TweakData",
         "classes/AmongUs_GameManager",
+        "hooks/HUDMissionBriefing",
 
     }
 
@@ -94,4 +98,37 @@ function AmongUs:_init_hooks()
         dofile(mod_path .. hook .. ".lua")
         log("Included script ", hook)
     end
+end
+
+
+--Snippet from /lib/utils/tprint.lua, it doesn't get run so lmao
+
+function tprint(tbl, indent)
+	indent = indent or 0
+	local toprint = string.rep(" ", indent) .. "{\r\n"
+	indent = indent + 2
+
+	for k, v in pairs(tbl) do
+		toprint = toprint .. string.rep(" ", indent)
+
+		if type(k) == "number" then
+			toprint = toprint .. "[" .. k .. "] = "
+		elseif type(k) == "string" then
+			toprint = toprint .. k .. "= "
+		end
+
+		if type(v) == "number" then
+			toprint = toprint .. v .. ",\r\n"
+		elseif type(v) == "string" then
+			toprint = toprint .. "\"" .. v .. "\",\r\n"
+		elseif type(v) == "table" then
+			toprint = toprint .. tprint(v, indent + 2) .. ",\r\n"
+		else
+			toprint = toprint .. "\"" .. tostring(v) .. "\",\r\n"
+		end
+	end
+
+	toprint = toprint .. string.rep(" ", indent - 2) .. "}"
+
+	return toprint
 end

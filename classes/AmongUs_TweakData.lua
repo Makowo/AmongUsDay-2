@@ -3,13 +3,14 @@ AmongUs.TweakData = AmongUs.TweakData or class()
 --Current idea is to have a table of all the tweak data, and then have a function to add the required amount of tasks to their player table, this would not be synced.
 function AmongUs.TweakData:init()
     self.tasks = {
-        shared = {
+        common = {
             AdminSwipe = {
                 id = "AdminSwipe", --Unique ID, mostly for custom tasks
                 location = "Admin", --Location of the task
                 name = "Swipe Keycard", --Name of the task
                 progress = 0, --Progress of the task, this will be modified by the game
                 max_progress = 1, --Max progress of the task, when progress == max_progress, the task is completed
+                text_id = "nil", --Text id of the task, this will be modified by the game
             },
             FixWiring = {
                 id = "AdminSwipe",
@@ -17,6 +18,7 @@ function AmongUs.TweakData:init()
                 name = "Swipe Keycard",
                 progress = 0,
                 max_progress = 3,
+                text_id = "nil",
             },
         },
         long = {
@@ -26,20 +28,37 @@ function AmongUs.TweakData:init()
                 name = "Clear Asteroids",
                 progress = 0,
                 max_progress = 20,
+                text_id = "nil",
+            },
+            despacito = {
+                id = "despacito",
+                location = "Weapons",
+                name = "Clear Asteroids",
+                progress = 0,
+                max_progress = 20,
+                text_id = "nil",
             },
         },
         short = {
-            amg_short_1 = "CleanVent",
             CleanVent = {
                 id = "CleanVent",
                 location = "Weapons",
                 name = "Clean Vent",
                 progress = 0,
                 max_progress = 1,
+                text_id = "nil",
+            },
+            des2 = {
+                id = "des2",
+                location = "Weapons",
+                name = "Clean Vent",
+                progress = 0,
+                max_progress = 1,
+                text_id = "nil",
             },
         }
     }
-    PrintTable(self.tasks.shared)
+    PrintTable(self.tasks.common)
 end
 
 --To add a new custom task
