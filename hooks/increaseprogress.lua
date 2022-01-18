@@ -1,1 +1,1 @@
-return function () managers.hud._hud_amongus:add_task_bar_progress(0.1) end
+return function () managers.hud._hud_amongus:update_task_bar() end

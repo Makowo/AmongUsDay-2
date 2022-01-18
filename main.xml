@@ -62,6 +62,10 @@
 			<asset name="grenade_crate"/>
 			<asset name="bodybags_bag"/>
 		</assets>
+		<AddFiles directory="assets">
+			<font load="true" path="fonts/escom_outline"/>
+			<texture path="fonts/escom_outline"/>
+		</AddFiles>
 		<hooks directory="hooks">
 			<hook file="gamesetup.lua" source_file="lib/setups/gamesetup"/>
 			<hook file="GamemodeStandard.lua" source_file="lib/utils/game_state_machine/gamestatemachine"/>

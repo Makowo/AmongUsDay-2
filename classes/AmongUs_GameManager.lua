@@ -32,6 +32,7 @@ function AmongUs.GM:_create_new_player(peer_id, name, steam_id)
     if managers.network:session() and  peer_id == managers.network:session():local_peer():id() or 1 then
         self:_assign_tasks(peer_id)
     end
+    log(tprint(self._players[peer_id].tasks))
     --TODO: generate tasks for the new player if they are a crewmate
 end
 
@@ -56,5 +57,27 @@ function AmongUs.GM:_assign_tasks(player_id)
             table.remove(fuckihatetables, random)
         end
     end
-    log(tprint(player.tasks))
+end
 
+--get total number of connected players
+function AmongUs.GM:num_connected_players()
+    local num = 0
+    for i = 1, 18, 1 do
+        if self._players[i].connected then
+            num = num + 1
+        end
+    end
+    return num
+end
+
+--get total amount of completed tasks
+function AmongUs.GM:get_total_completed_tasks()
+    local total = 0
+    for i = 1, 18, 1 do
+        if self._players[i].connected then
+            local tasks = self._players[i].tasks.completed
+            total = total + tasks.common + tasks.short + tasks.long
+        end
+    end
+    return total
+end

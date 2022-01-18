@@ -100,6 +100,11 @@ function AmongUs:_init_hooks()
     end
 end
 
+--get total number of tasks
+function AmongUs:get_total_tasks()
+    return (self._tasks.short + self._tasks.long + self._tasks.common) * AmongUs.GM:num_connected_players()
+end
+
 
 --Snippet from /lib/utils/tprint.lua, it doesn't get run so lmao
 

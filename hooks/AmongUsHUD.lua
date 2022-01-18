@@ -12,7 +12,7 @@ function HUDManager:_setup_amongus_hud()
 end
 
 HUDAMONGUS = HUDAMONGUS or class()
-HUDAMONGUS.DEFAULT_FONT = "fonts/font_large_mf"
+HUDAMONGUS.DEFAULT_FONT = "fonts/escom_outline"
 HUDAMONGUS.DEFAULT_SHADOW_FONT = "fonts/font_medium_shadow_mf"
 
 function HUDAMONGUS:init(parent)
@@ -33,57 +33,79 @@ function HUDAMONGUS:create_task_bar(parent)
         name = "task_bar",
         visible = true,
         layer = 1,
-        w = parent:w() / 2,
-        h = parent:h() / 8,
-        x = 0,
-        y = 0,
+        w = parent:w() / 3,
+        h = parent:h() / 16,
+        x = 16,
+        y = 16,
         valign = "top",
         halign = "left",
         alpha = 1,
     })
-    self._task_bar_progress = self._task_bar:rect({
-        name = "task_bar_progress",
-        layer = 2,
-        w = 0,
-        h = self._task_bar:h(),
-        x = 0,
-        y = 0,
-        color = Color.green,
-    })
-    self._task_bar_bg = self._task_bar:rect({
+    --black outline
+    self._task_bar_outline = self._task_bar:rect({
         name = "task_bar_background",
         layer = 1,
         w = self._task_bar:w(),
         h = self._task_bar:h(),
         x = 0,
         y = 0,
+        color = Color.black,
+    })
+    self._task_bar_border = self._task_bar:rect({
+        name = "task_bar_background",
+        layer = 1,
+        w = self._task_bar_outline:w() - 8,
+        h = self._task_bar_outline:h() - 8,
+        x = 4,
+        y = 4,
+        color = Color("8d8f8d"),
+    })
+    --Light green progress bar
+    self._task_bar_progress = self._task_bar:rect({
+        name = "task_bar_progress",
+        layer = 2,
+        w = 0,
+        h = self._task_bar_border:h() - 8,
+        x = 8,
+        y = 8,
+        color = Color.green,
+    })
+    --Dark green progress bar bg
+    self._task_bar_bg = self._task_bar:rect({
+        name = "task_bar_background",
+        layer = 1,
+        w = self._task_bar_border:w() - 8,
+        h = self._task_bar_border:h() - 8,
+        x = 8,
+        y = 8,
         color = Color("2e402e"),
     })
     self._task_bar_text = self._task_bar:text({
         name = "task_bar_text",
         layer = 3,
-        text = "0%",
+        text = "TOTAL TASKS COMPLETED",
         font = HUDAMONGUS.DEFAULT_FONT,
-        font_size = self._task_bar:h() * 0.8,
+        font_size = self._task_bar_bg:h() * 0.8,
         color = Color.white,
-        align = "center",
+        align = "left",
         vertical = "center",
         w = self._task_bar:w(),
         h = self._task_bar:h(),
-        x = 0,
+        x = 16,
         y = 0,
     })
 end
 
 --Update the task bar progress
-function HUDAMONGUS:update_task_bar(progress)
-    self._task_bar_progress:set_w(self._task_bar:w() * progress)
-    self._task_bar_text:set_text(string.format("%d%%", progress * 100))
-end
+function HUDAMONGUS:update_task_bar()
+    local task_amount = AmongUs:get_total_tasks()
+    local completed_tasks = AmongUs.GM:get_completed_tasks()
+    --don't you love math? i don't.
+    local progress = math.map_range(completed_tasks, task_amount, 0, 1, 0)
+    local clamped_progress = math.clamp(self._task_bar_bg:w() * progress, 0, self._task_bar_bg:w())
 
---Add more progress to the task bar
-function HUDAMONGUS:add_task_bar_progress(progress)
-    self:update_task_bar(self._task_bar_progress:w() / self._task_bar:w() + progress)
+    self._task_bar_progress:set_w(clamped_progress)
+    --self._task_bar_text:set_text(string.format("%d%%", progress * 100))
 end
 
 --Creates the panel that contains the task information
@@ -94,8 +116,8 @@ function HUDAMONGUS:create_panel(parent)
         layer = 1,
         w = parent:w() / 4,
         h = parent:h() / 4,
-        x = 0,
-        y = 0,
+        x = 20,
+        y = 16,
         alpha = 0.9,
     })
     self._task_panel_bg = self._task_panel:rect({
@@ -107,7 +129,7 @@ function HUDAMONGUS:create_panel(parent)
         y = 0,
         color = Color("616868"),
     })
-    self._task_panel:set_top(self._task_bar:bottom())
+    self._task_panel:set_top(self._task_bar:bottom() + 8)
 end
 
 function HUDAMONGUS:update_task_panel()
@@ -132,12 +154,14 @@ function HUDAMONGUS:create_task_text(amount, task_type, player_tasks)
         text = text or "ERROR",
         font = HUDAMONGUS.DEFAULT_FONT,
         font_size = 24,
-        color = Color.black,
+        color = Color.white,
         align = "left",
         vertical = "left",
         h = 28,
+        y = 4,
+        x = 8
     })
-
+    --Store the text so we can update it later
     AmongUs.GM._players[managers.network:session():local_peer():id()].tasks[task_type][amount].text_id = self._task_text[self._lazy_amount]
 
     --thx shiny hoppip for :text_rect()
@@ -145,12 +169,12 @@ function HUDAMONGUS:create_task_text(amount, task_type, player_tasks)
     if self._lazy_amount ~= 1 then
         --can't run this everytime because otherwise it'll be smaller than the earlier task
         if self._task_panel:w() < w then
-            self._task_panel:set_w(w)
+            self._task_panel:set_w(w + 16)
         end
 
         self._task_text[self._lazy_amount]:set_top(self._task_text[self._lazy_amount-1]:bottom())
         self._task_panel:set_h(self._task_text[self._lazy_amount]:bottom())
     else --first task
-        self._task_panel:set_w(w)
+        self._task_panel:set_w(w + 16)
     end
 end
