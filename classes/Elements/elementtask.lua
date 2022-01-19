@@ -46,15 +46,15 @@ function ElementTask:on_executed(instigator, ...)
 		return
 	end
 	local class = AmongUs.TweakData.tasks[self._values.task_type][self._values.task_id].class
-	AmongUsMinigameBase:init(self, class, ...)
+	--AmongUsMinigameBase:init(self, class, ...)
+	class:new(self, ...)
 end
 
 function ElementTask:_on_executed(instigator, ...)
 	if not self._values.enabled then
 		return
 	end
-	log(tostring("on_executed"))
-	log(tostring(...))
+
 	for _, id in ipairs(self._values.elements) do
 		local element = self:get_mission_element(id)
 
@@ -75,7 +75,7 @@ function ElementTask:_on_executed(instigator, ...)
 		end
 	end
 
-	ElementTask.super.on_executed(self, instigator, "potato", ...)
+	ElementTask.super.on_executed(self, instigator, ...)
 end
 
 function ElementTask:on_interacted(instigator)
