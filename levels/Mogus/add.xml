@@ -70,8 +70,15 @@
 		<unit path="units/payday2/architecture/mkp/mkp_ext_wall_1m_a"/>
 	</add>
 	<add from_db="true" path="units/dev_tools/editable_text_long/editable_text_long" type="unit">
-		<unit path="units/dev_tools/editable_text_long/editable_text_long"/>
-		<object path="units/dev_tools/editable_text_long/editable_text_long"/>
 		<material_config path="units/dev_tools/editable_text_long/editable_text_long"/>
+		<object path="units/dev_tools/editable_text_long/editable_text_long"/>
+		<unit path="units/dev_tools/editable_text_long/editable_text_long"/>
+	</add>
+	<add path="pd2_mod_amongus/units/dev_tools/mission_elements/point_interaction/interaction_dummy" type="unit">
+		<material_config path="pd2_mod_amongus/units/dev_tools/mission_elements/point_interaction/interaction_dummy"/>
+		<sequence_manager path="pd2_mod_amongus/units/dev_tools/mission_elements/point_interaction/interaction_dummy"/>
+		<object path="pd2_mod_amongus/units/dev_tools/mission_elements/point_interaction/interaction_dummy"/>
+		<model path="pd2_mod_amongus/units/dev_tools/mission_elements/point_interaction/interaction_dummy"/>
+		<unit path="pd2_mod_amongus/units/dev_tools/mission_elements/point_interaction/interaction_dummy"/>
 	</add>
 </table>

@@ -32,7 +32,7 @@ function AmongUs.GM:_create_new_player(peer_id, name, steam_id)
     if managers.network:session() and  peer_id == managers.network:session():local_peer():id() or 1 then
         self:_assign_tasks(peer_id)
     end
-    log(tprint(self._players[peer_id].tasks))
+    --log(tprint(self._players[peer_id].tasks))
     --TODO: generate tasks for the new player if they are a crewmate
 end
 
@@ -80,4 +80,17 @@ function AmongUs.GM:get_total_completed_tasks()
         end
     end
     return total
+end
+
+--Progress a task for a player by 1
+function AmongUs.GM:progress_task(player_id, task_type, task_id)
+    local player = self._players[player_id]
+    if not player.tasks[task_type][task_id] then
+        return
+    end
+    local task = player.tasks[task_type][task_id]
+    task.progress = task.progress + 1
+    if task.progress >= task.max_progress then
+        player.tasks.completed[task_type] = player.tasks.completed[task_type] + 1
+    end
 end

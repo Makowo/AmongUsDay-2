@@ -80,19 +80,22 @@ function AmongUs:_init_hooks()
         "classes/AmongUs_TweakData",
         "classes/AmongUs_GameManager",
         "hooks/HUDMissionBriefing",
+        "classes/elements/elementtask",
+        "classes/Minigames/AmongUsMinigameIntExt",
+        "classes/Minigames/AmongUsMinigameBase",
 
     }
 
-    --[[self._elements = {
-        "WeaponSwitch"
+    self._elements = {
+        "Task"
     }
 
     if Global.editor_mode then
         for _, element in pairs(self._elements) do
-            dofile(mod_path .. "classes/Editor/Editor" .. element .. ".lua")
+            dofile(mod_path .. "classes/Editor/" .. element .. "element.lua")
             table.insert(BLE._config.MissionElements, "Element".. element)
         end
-    end]]
+    end
 
     for _, hook in pairs(self._hooks) do
         dofile(mod_path .. hook .. ".lua")

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<unit type="support_unit" slot="1">
+	<network sync="spawn"/>
+	<object file="pd2_mod_amongus/units/dev_tools/mission_elements/point_interaction/interaction_dummy" />
+	<extensions>
+		<!-- <extension name="damage" class="UnitDamage" /> -->
+		<extension name="interaction" class="AmongUsMinigameIntExt" >
+			<var name="tweak_data" value="copy_machine_smuggle" />
+		</extension>
+	</extensions>
+</unit>

@@ -99,7 +99,7 @@ end
 --Update the task bar progress
 function HUDAMONGUS:update_task_bar()
     local task_amount = AmongUs:get_total_tasks()
-    local completed_tasks = AmongUs.GM:get_completed_tasks()
+    local completed_tasks = AmongUs.GM:get_total_completed_tasks()
     --don't you love math? i don't.
     local progress = math.map_range(completed_tasks, task_amount, 0, 1, 0)
     local clamped_progress = math.clamp(self._task_bar_bg:w() * progress, 0, self._task_bar_bg:w())

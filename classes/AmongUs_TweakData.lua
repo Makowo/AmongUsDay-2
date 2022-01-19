@@ -29,6 +29,7 @@ function AmongUs.TweakData:init()
                 progress = 0,
                 max_progress = 20,
                 text_id = "nil",
+                class = Asteroids,
             },
             despacito = {
                 id = "despacito",
@@ -58,7 +59,7 @@ function AmongUs.TweakData:init()
             },
         }
     }
-    PrintTable(self.tasks.common)
+    --PrintTable(self.tasks.common)
 end
 
 --To add a new custom task
