@@ -80,11 +80,11 @@ function Asteroids:init(parent, ...)
         end
     })
 
-    self._penis:Button({
+    --[[self._penis:Button({
         name = "MyButton",
         text = "Press me!",
         on_callback = ClassClbk(self, "on_minigame_finished")
-    })
+    })]]
 
     self._penis:Button({
         name = "ExitButton",
@@ -154,32 +154,30 @@ function AsteroidObject:init(parent, asteroidnum)
         layer = 2501,
         on_callback = ClassClbk(self, "Clicked"),
         position = function(item)
-            item:SetPosition(0,0)
+            item:SetPosition(-64, math.random(0, self._parent._penis:H()))
         end
     })
-    log(tostring(self._parent._penis:W().. " " .. self._parent._penis:H()))
-    local x, y = self._asteroid:Position()
-    log(tostring(x) .. " " .. tostring(y))
-    --self._asteroid:animate(ClassClbk(self, "animate"))
+    self.startpos = self.startpos or self._asteroid:Position()
+    self.endpos = self.endpos or {self._parent._penis:W(), math.random(self._parent._penis:H())}
+    self.seconds = 0
+    self.max_seconds = table.random({0.5, 1, 1.5, 2, 2.5, 3})
 end
 
---animate the asteroid
+--Moves the asteroid across the panel
+--this caused a lot of pain :)
 function AsteroidObject:animate(t, dt)
-    local startpos = self._asteroid:Position()
-    self.endpos = {self._parent._penis:W(), self._parent._penis:H()}
-    self.seconds = self.seconds and self.seconds + dt or 0
-
-    log("t: " .. tostring(t) .. "DT: " .. tostring(dt) )
-    self.max_seconds = self.max_seconds or 4
-    log(t)
+    self.seconds = self.seconds + dt
+    --self.startpos[2] = math.random(self.startpos[2]) -- randomize the y position
+    --log("t: " .. tostring(t) .. "DT: " .. tostring(dt) )
+    --log(t)
     if self.seconds >= self.max_seconds then self._parent:AsteroidDestroy(self._asteroidnum) end
-    log("seconds: " .. tostring(self.seconds) .. " max_seconds: " .. tostring(self.max_seconds))
-    log(tprint(startpos))
-    log(tprint(self.endpos))
-    self._x = self._x or startpos[1]
-    self._y = self._y or math.random(0, startpos[2])
-    self._progress = math.clamp(self.seconds / self.max_seconds, 0, 1)
-    self._asteroid:SetPosition(Easing.linear(self._x, self.endpos[1], self._progress), Easing.linear(self._y, self.endpos[2], self._progress))
+    --log("seconds: " .. tostring(self.seconds) .. " max_seconds: " .. tostring(self.max_seconds))
+    --log(tprint(self.startpos))
+    --log(tprint(self.endpos))
+    local progress = math.clamp(self.seconds / self.max_seconds, 0, 1)
+    local xpos = math.lerp(self.startpos[1], self.endpos[1], progress)
+    local ypos = math.lerp(self.startpos[2], self.endpos[2], progress)
+    self._asteroid:SetPosition(xpos, ypos)
     --math.lerp(self._asteroid:Rotation(), math.random(0, 360), dt)
 end
 
