@@ -131,7 +131,11 @@ function Asteroids:AsteroidDestroy(asteroidnum, clicked)
     self._asteroids[asteroidnum]:Destroy()
     self._asteroids[asteroidnum] = nil
     if clicked then
-        --increment task
+        local player_id = managers.network:session():local_peer():id()
+        local completed = AmongUs.GM:progress_task(player_id, "long", "Asteroids")
+        if completed then
+            self:on_minigame_finished()
+        end
     end
 end
 
@@ -163,7 +167,8 @@ function AsteroidObject:init(parent, asteroidnum)
             item:SetPosition(-64, math.random(0, self._parent._penis:H())) --spawn off screen, with a random height
         end
     })
-    self._asteroid.img:set_rotation(math.random() * 360) -- game gets pissy if it's rotating when it's destroyed, just set it in a random direction
+    --setting ANY rotation breaks the clipping on the objects, see images, rotation on: https://i.imgur.com/bLFf79W.png, rotation off: https://i.imgur.com/CLJCSgC.png
+    --self._asteroid.img:set_rotation(math.random() * 360) -- game gets pissy if it's rotating when it's destroyed, just set it in a random direction
     self.startpos = self.startpos or self._asteroid:Position()
     self.endpos = self.endpos or {self._parent._penis:W(), math.random(self._parent._penis:H())}
     self.seconds = 0

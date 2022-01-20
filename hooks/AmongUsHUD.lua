@@ -136,17 +136,21 @@ function HUDAMONGUS:update_task_panel()
     local player_tasks = AmongUs.GM._players[managers.network:session():local_peer():id()].tasks
 
     for task_type, amount in pairs(player_tasks) do
-        for i = 1, #amount, 1 do
-            self:create_task_text(i, task_type, player_tasks[task_type][i])
+        for task_name, task_tbl in pairs(player_tasks[task_type]) do
+            log(tostring(task_name) .. " " .. tostring(task_tbl))
+            if type(task_tbl) == "table" then
+                self:create_task_text(task_type, task_name, task_tbl)
+            end
         end
     end
 end
 
 --Creates the task text
-function HUDAMONGUS:create_task_text(amount, task_type, player_tasks)
+function HUDAMONGUS:create_task_text(task_type, task_name, task_table)
     self._task_text = self._task_text or {}
-    self._lazy_amount = self._lazy_amount and self._lazy_amount + 1 or amount
-    local text = player_tasks.location .. ": " .. player_tasks.name .. " (" .. player_tasks.progress .. "/" .. player_tasks.max_progress .. ")"
+    self._lazy_amount = self._lazy_amount and self._lazy_amount + 1 or 1
+    --log(tprint(task_table))
+    local text = task_table.location .. ": " .. task_table.name .. " (" .. task_table.progress .. "/" .. task_table.max_progress .. ")"
 
     self._task_text[self._lazy_amount] = self._task_panel:text({
         name = "task_text" .. self._lazy_amount,
@@ -162,7 +166,9 @@ function HUDAMONGUS:create_task_text(amount, task_type, player_tasks)
         x = 8
     })
     --Store the text so we can update it later
-    AmongUs.GM._players[managers.network:session():local_peer():id()].tasks[task_type][amount].text_id = self._task_text[self._lazy_amount]
+    task_table.text_id = self._task_text[self._lazy_amount]
+
+    log(tostring(AmongUs.GM._players[managers.network:session():local_peer():id()].tasks[task_type][task_name].text_id))
 
     --thx shiny hoppip for :text_rect()
     local x, y, w, h = self._task_text[self._lazy_amount]:text_rect()
