@@ -31,14 +31,14 @@ function AmongUs.TweakData:init()
                 text_id = "nil",
                 class = Asteroids,
             },
-            despacito = {
+            --[[despacito = {
                 id = "despacito",
                 location = "Weapons",
                 name = "Clear Asteroids",
                 progress = 0,
                 max_progress = 20,
                 text_id = "nil",
-            },
+            },]]
         },
         short = {
             CleanVent = {

@@ -86,23 +86,19 @@ function Asteroids:init(parent, ...)
         end
     })
 
-    --[[self._penis:Button({
-        name = "MyButton",
-        text = "Press me!",
-        on_callback = ClassClbk(self, "on_minigame_finished")
-    })]]
-
-    self._penis:Button({
+    self._exit = self._penis:ImageButton({
         name = "ExitButton",
-        text = "X",
+        texture = "guis/textures/pd2/endscreen/exp_ring",
+        texture_rect = {0, 0, 256, 256},
+        w = 64,
+        h = 64,
+        position = function(item)
+            item:SetPosition(0, 0)
+        end,
         on_callback = ClassClbk(self, "Destroy")
     })
 
-    self._penis:Button({
-        name = "aadsada",
-        text = "Xxx",
-        on_callback = ClassClbk(self, "CreateAsteroid")
-    })
+
     BeardLib:AddUpdater("AmongUsMinigame", ClassClbk(self, "update"))
     --self._menu:SetEnabled(true)
 end
@@ -141,6 +137,12 @@ end
 
 --will be used to update the asteroids flying around
 function Asteroids:update(t, dt)
+    self._time = self._time or 0.5
+    self._time = self._time - dt
+    if self._time < 0 then
+        self._time = 0.5
+        self:CreateAsteroid()
+    end
     for _, asteroid in pairs(self._asteroids) do
         asteroid:update(t, dt)
     end
@@ -172,7 +174,7 @@ function AsteroidObject:init(parent, asteroidnum)
     self.startpos = self.startpos or self._asteroid:Position()
     self.endpos = self.endpos or {self._parent._penis:W(), math.random(self._parent._penis:H())}
     self.seconds = 0
-    self.max_seconds = table.random({0.5, 1, 1.5, 2, 2.5, 3})
+    self.max_seconds = table.random({0.5, 1, 1.5, 1.75, 2, 2.25, 2.5, 3, 1.75, 2, 2.25, 2.5, 3})
 end
 
 --Moves the asteroid across the panel

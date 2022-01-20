@@ -99,8 +99,7 @@ function AmongUs.GM:progress_task(player_id, task_type, task_id)
 
     local task = player.tasks[task_type][task_id]
     task.progress = task.progress + 1
-    task.text_id:set_text(task.location .. ": " .. task.name .. " (" .. task.progress .. "/" .. task.max_progress .. ")")
-    task.text_id:set_color(Color.yellow)
+    managers.hud._hud_amongus:update_task_text(task)
 
     if task.progress >= task.max_progress then
         task.text_id:set_color(Color.green)

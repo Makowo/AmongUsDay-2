@@ -118,7 +118,7 @@ function HUDAMONGUS:create_panel(parent)
         h = parent:h() / 4,
         x = 20,
         y = 16,
-        alpha = 0.9,
+        alpha = 1,
     })
     self._task_panel_bg = self._task_panel:rect({
         name = "task_bar_background",
@@ -127,6 +127,7 @@ function HUDAMONGUS:create_panel(parent)
         h = self._task_panel:h(),
         x = 0,
         y = 0,
+        alpha = 0.75,
         color = Color("616868"),
     })
     self._task_panel:set_top(self._task_bar:bottom() + 8)
@@ -183,4 +184,14 @@ function HUDAMONGUS:create_task_text(task_type, task_name, task_table)
     else --first task
         self._task_panel:set_w(w + 16)
     end
+end
+
+function HUDAMONGUS:update_task_text(task)
+    local x, y, w, h = task.text_id:text_rect()
+    log(tostring(w).. " " .. tostring(self._task_panel:w()))
+    if self._task_panel:w() - 16 < w then
+        self._task_panel:set_w(w + 16)
+    end
+    task.text_id:set_text(task.location .. ": " .. task.name .. " (" .. task.progress .. "/" .. task.max_progress .. ")")
+    task.text_id:set_color(Color.yellow)
 end
