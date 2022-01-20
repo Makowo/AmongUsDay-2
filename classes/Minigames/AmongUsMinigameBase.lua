@@ -52,6 +52,12 @@ function MenuUI:KeyPressed(o, k)
     end
 end]]
 
+function BeardLib.Items.ImageButton:SetRotation(dt)
+    log("rot: " ..tostring(self.img:rotation()))
+    local rot = (self.img:rotation() + dt) % 360
+    self.img:set_rotation(rot)
+end
+
 
 Asteroids = Asteroids or class()
 
@@ -151,12 +157,13 @@ function AsteroidObject:init(parent, asteroidnum)
         color = Color(1, 1, 1),
         alpha = 1,
         visible = true,
-        layer = 2501,
+        layer = 2500,
         on_callback = ClassClbk(self, "Clicked"),
         position = function(item)
-            item:SetPosition(-64, math.random(0, self._parent._penis:H()))
+            item:SetPosition(-64, math.random(0, self._parent._penis:H())) --spawn off screen, with a random height
         end
     })
+    self._asteroid.img:set_rotation(math.random() * 360) -- game gets pissy if it's rotating when it's destroyed, just set it in a random direction
     self.startpos = self.startpos or self._asteroid:Position()
     self.endpos = self.endpos or {self._parent._penis:W(), math.random(self._parent._penis:H())}
     self.seconds = 0
@@ -167,18 +174,11 @@ end
 --this caused a lot of pain :)
 function AsteroidObject:animate(t, dt)
     self.seconds = self.seconds + dt
-    --self.startpos[2] = math.random(self.startpos[2]) -- randomize the y position
-    --log("t: " .. tostring(t) .. "DT: " .. tostring(dt) )
-    --log(t)
     if self.seconds >= self.max_seconds then self._parent:AsteroidDestroy(self._asteroidnum) end
-    --log("seconds: " .. tostring(self.seconds) .. " max_seconds: " .. tostring(self.max_seconds))
-    --log(tprint(self.startpos))
-    --log(tprint(self.endpos))
     local progress = math.clamp(self.seconds / self.max_seconds, 0, 1)
     local xpos = math.lerp(self.startpos[1], self.endpos[1], progress)
     local ypos = math.lerp(self.startpos[2], self.endpos[2], progress)
     self._asteroid:SetPosition(xpos, ypos)
-    --math.lerp(self._asteroid:Rotation(), math.random(0, 360), dt)
 end
 
 --update the astoroid
