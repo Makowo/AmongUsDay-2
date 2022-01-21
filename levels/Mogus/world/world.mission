@@ -206,11 +206,6 @@
 						<entry index="1" type="table">
 							<entry key="alternative" type="string" value="interacted"/>
 							<entry key="delay" type="number" value="0"/>
-							<entry key="id" type="number" value="100006"/>
-						</entry>
-						<entry index="2" type="table">
-							<entry key="alternative" type="string" value="interacted"/>
-							<entry key="delay" type="number" value="0"/>
 							<entry key="id" type="number" value="100009"/>
 						</entry>
 					</entry>
@@ -304,7 +299,7 @@
 					<entry key="base_delay" type="number" value="0"/>
 					<entry key="elements" type="table">
 					</entry>
-					<entry key="enabled" type="boolean" value="false"/>
+					<entry key="enabled" type="boolean" value="true"/>
 					<entry key="execute_on_startup" type="boolean" value="false"/>
 					<entry key="on_executed" type="table">
 						<entry index="1" type="table">
@@ -316,6 +311,8 @@
 					<entry key="override_timer" type="number" value="-1"/>
 					<entry key="position" type="vector3" value="88.1497 -754.495 0.00400394"/>
 					<entry key="rotation" type="quaternion" value="0 0 0 -1"/>
+					<entry key="task_id" type="string" value="CleanVent"/>
+					<entry key="task_type" type="string" value="short"/>
 					<entry key="trigger_times" type="number" value="0"/>
 					<entry key="tweak_data_id" type="string" value="answer_call"/>
 				</entry>

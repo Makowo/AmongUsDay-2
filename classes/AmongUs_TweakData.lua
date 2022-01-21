@@ -48,15 +48,16 @@ function AmongUs.TweakData:init()
                 progress = 0,
                 max_progress = 1,
                 text_id = "nil",
+                class = CleanVent,
             },
-            des2 = {
+            --[[des2 = {
                 id = "des2",
                 location = "Weapons",
                 name = "Clean Vent",
                 progress = 0,
                 max_progress = 1,
                 text_id = "nil",
-            },
+            },]]
         }
     }
     --PrintTable(self.tasks.common)

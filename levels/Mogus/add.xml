@@ -81,4 +81,7 @@
 		<model path="pd2_mod_amongus/units/dev_tools/mission_elements/point_interaction/interaction_dummy"/>
 		<unit path="pd2_mod_amongus/units/dev_tools/mission_elements/point_interaction/interaction_dummy"/>
 	</add>
+	<add>
+		<texture path="pd2_mod_amongus/units/black_df"/>
+	</add>
 </table>

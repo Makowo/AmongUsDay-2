@@ -100,10 +100,14 @@ function AmongUs.GM:progress_task(player_id, task_type, task_id)
     local task = player.tasks[task_type][task_id]
     task.progress = task.progress + 1
     managers.hud._hud_amongus:update_task_text(task)
-
+    --if the task progress = max progress, task is completed, set it's color and add to the completed task count
     if task.progress >= task.max_progress then
         task.text_id:set_color(Color.green)
         player.tasks.completed[task_type] = player.tasks.completed[task_type] + 1
+        --update the task bar if task bar updating is enabled
+        if AmongUs._gameplay.task_bar_updates then
+            managers.hud._hud_amongus:update_task_bar()
+        end
         return true
     end
 end

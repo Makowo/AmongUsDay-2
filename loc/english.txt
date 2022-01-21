@@ -1,1 +1,3 @@
-{}
+{
+	"heist_Mogus_name" : "Stop Looking, Pervert."
+}
