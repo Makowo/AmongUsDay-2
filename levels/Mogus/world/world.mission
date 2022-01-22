@@ -317,6 +317,28 @@
 					<entry key="tweak_data_id" type="string" value="answer_call"/>
 				</entry>
 			</entry>
+			<entry index="15" type="table">
+				<entry key="class" type="string" value="ElementTask"/>
+				<entry key="editor_name" type="string" value="task_003"/>
+				<entry key="id" type="number" value="100014"/>
+				<entry key="script" type="string" value="default"/>
+				<entry key="values" type="table">
+					<entry key="base_delay" type="number" value="0"/>
+					<entry key="elements" type="table">
+					</entry>
+					<entry key="enabled" type="boolean" value="true"/>
+					<entry key="execute_on_startup" type="boolean" value="false"/>
+					<entry key="on_executed" type="table">
+					</entry>
+					<entry key="override_timer" type="number" value="-1"/>
+					<entry key="position" type="vector3" value="88.1497 -904.495 0.00400394"/>
+					<entry key="rotation" type="quaternion" value="0 0 0 -1"/>
+					<entry key="task_id" type="string" value="Wires"/>
+					<entry key="task_type" type="string" value="short"/>
+					<entry key="trigger_times" type="number" value="0"/>
+					<entry key="tweak_data_id" type="string" value="answer_call"/>
+				</entry>
+			</entry>
 		</entry>
 		<entry key="instances" type="table">
 		</entry>

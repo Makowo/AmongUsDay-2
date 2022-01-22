@@ -244,7 +244,6 @@ function CleanVent:init(parent, ...)
         on_callback = ClassClbk(self, "Destroy")
     })
 
-
     --BeardLib:AddUpdater("AmongUsMinigame", ClassClbk(self, "update"))
     --self._menu:SetEnabled(true)
 end

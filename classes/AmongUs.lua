@@ -83,6 +83,7 @@ function AmongUs:_init_hooks()
         "classes/elements/elementtask",
         "classes/Minigames/AmongUsMinigameIntExt",
         "classes/Minigames/AmongUsMinigameBase",
+        "classes/Minigames/Wires",
 
     }
 
