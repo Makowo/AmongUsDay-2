@@ -27,26 +27,6 @@ function Wires:init(parent, ...)
         end
     })
 
-    self.Wire1 = self._game:Image({
-        name = "VentCover",
-        texture = "pd2_mod_amongus/red_wire",
-        texture_rect = {0, 0, 1024, 1024},
-        w = self._menu_panel:w(),
-        h = self._menu_panel:h(),
-        align = "grow",
-        --foreground = Color.red,
-        --background_color = Color.white,
-        enabled_alpha = 1,
-        layer = 2,
-        position = function(item)
-            item:SetPosition(0, 0)
-        end,
-        on_callback = function(item)
-            item:SetVisible(false)
-        end
-    })
-    --PrintTable(getmetatable(self.Wire1:Panel()))
-
     self._exit_holder = self._menu:Holder({
         name = "exit_holder",
         background_color = Color(0, 0, 0):with_alpha(0.35),
@@ -71,7 +51,7 @@ function Wires:init(parent, ...)
         end,
         on_callback = ClassClbk(self, "Destroy")
     })
-    PrintTable(getmetatable(self.Wire1.img))
+
     local function MouseMoved(o, x, y)
         --log("MouseMoved x:" .. tostring(x) .. " " .. tostring(y))
         if o:Inside(x, y) then
@@ -82,19 +62,12 @@ function Wires:init(parent, ...)
             local rot = math.atan2(rotY, rotX) + 180
             --log("rot: " .. tostring(rot))
             --local x, y = x - pnlx, y - pnly
-            local w = self.Wire1:Panel():w()
             --local x = math.floor(x / w)
             if self._pressed then
                 self:drawline(pnlx, pnly, x, y, rot)
             else
                 self:destroyline()
             end
-            --self.Wire1:Panel():set_w(x)
-            --[[self.Wire1:Panel():set_h(y)
-            self.Wire1.img:set_width(x)
-            --self.Wire1.img:set_height(y)
-            --self.Wire1.img:set_rotation(rot)
-            log(tostring(self.Wire1:Panel():w()))]]
         end
         return (self.menu_type and o:MouseMovedMenuEvent(x,y)) or o:MouseMovedSelfEvent(x,y)
     end
@@ -217,15 +190,15 @@ function WiresObject:init(parent, x, y, rot)
     self._wires = self._parent._game:Image({
         name = "Wires",
         texture = "pd2_mod_amongus/red_wire",
-        texture_rect = {0, 0, 1024, 1024},
+        texture_rect = {0, 0, 32, 32},
         w = 64,
-        h = 64,
+        h = 16,
         color = Color(1, 1, 1),
         alpha = 1,
         visible = true,
         layer = 1,
         position = function(item)
-            item:SetPosition(x, y)
+            item:SetCenter(x + 8, y + 8)
         end
     })
     self._wires.img:set_rotation(rot)
