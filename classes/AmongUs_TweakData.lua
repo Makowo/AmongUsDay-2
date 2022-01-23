@@ -59,6 +59,15 @@ function AmongUs.TweakData:init()
                 text_id = "nil",
                 class = Wires
             },
+            DownloadData = {
+                id = "DownloadData",
+                location = {"Weapons", "Security"},
+                name = "DownloadData",
+                progress = 0,
+                max_progress = 2,
+                text_id = "nil",
+                class = DownloadData
+            },
         }
     }
     --PrintTable(self.tasks.common)

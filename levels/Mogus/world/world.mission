@@ -14,8 +14,8 @@
 					<entry key="execute_on_startup" type="boolean" value="false"/>
 					<entry key="on_executed" type="table">
 					</entry>
-					<entry key="position" type="vector3" value="0 0 0"/>
-					<entry key="rotation" type="quaternion" value="-0 0 -0 -1"/>
+					<entry key="position" type="vector3" value="-17.7591 -8.88972 0.00400394"/>
+					<entry key="rotation" type="quaternion" value="0 0 0 -1"/>
 					<entry key="state" type="string" value="crewmate"/>
 					<entry key="trigger_times" type="number" value="0"/>
 				</entry>
@@ -211,7 +211,7 @@
 					</entry>
 					<entry key="override_timer" type="number" value="-1"/>
 					<entry key="position" type="vector3" value="88.1497 -604.495 0.00400394"/>
-					<entry key="rotation" type="quaternion" value="0 0 0 1"/>
+					<entry key="rotation" type="quaternion" value="0 0 0 -1"/>
 					<entry key="task_id" type="string" value="Asteroids"/>
 					<entry key="task_type" type="string" value="long"/>
 					<entry key="toggle" type="string" value="on"/>
@@ -250,8 +250,8 @@
 					<entry key="execute_on_startup" type="boolean" value="false"/>
 					<entry key="on_executed" type="table">
 					</entry>
-					<entry key="position" type="vector3" value="-100 0 0"/>
-					<entry key="rotation" type="quaternion" value="-0 0 -0 -1"/>
+					<entry key="position" type="vector3" value="-117.759 -8.88972 0.00400394"/>
+					<entry key="rotation" type="quaternion" value="0 0 0 -1"/>
 					<entry key="state" type="string" value="crewmate"/>
 					<entry key="trigger_times" type="number" value="0"/>
 				</entry>
@@ -267,7 +267,7 @@
 					<entry key="execute_on_startup" type="boolean" value="false"/>
 					<entry key="on_executed" type="table">
 					</entry>
-					<entry key="position" type="vector3" value="-300 0 0"/>
+					<entry key="position" type="vector3" value="-317.759 -8.88972 0.00400394"/>
 					<entry key="rotation" type="quaternion" value="0 0 0 -1"/>
 					<entry key="state" type="string" value="crewmate"/>
 					<entry key="trigger_times" type="number" value="0"/>
@@ -284,7 +284,7 @@
 					<entry key="execute_on_startup" type="boolean" value="false"/>
 					<entry key="on_executed" type="table">
 					</entry>
-					<entry key="position" type="vector3" value="-200 0 0"/>
+					<entry key="position" type="vector3" value="-217.759 -8.88972 0.00400394"/>
 					<entry key="rotation" type="quaternion" value="0 0 0 -1"/>
 					<entry key="state" type="string" value="crewmate"/>
 					<entry key="trigger_times" type="number" value="0"/>
@@ -335,6 +335,29 @@
 					<entry key="rotation" type="quaternion" value="0 0 0 -1"/>
 					<entry key="task_id" type="string" value="Wires"/>
 					<entry key="task_type" type="string" value="short"/>
+					<entry key="trigger_times" type="number" value="0"/>
+					<entry key="tweak_data_id" type="string" value="answer_call"/>
+				</entry>
+			</entry>
+			<entry index="16" type="table">
+				<entry key="class" type="string" value="ElementTask"/>
+				<entry key="editor_name" type="string" value="task_004"/>
+				<entry key="id" type="number" value="100015"/>
+				<entry key="script" type="string" value="default"/>
+				<entry key="values" type="table">
+					<entry key="base_delay" type="number" value="0"/>
+					<entry key="elements" type="table">
+					</entry>
+					<entry key="enabled" type="boolean" value="true"/>
+					<entry key="execute_on_startup" type="boolean" value="false"/>
+					<entry key="on_executed" type="table">
+					</entry>
+					<entry key="override_timer" type="number" value="-1"/>
+					<entry key="position" type="vector3" value="88.1497 -504.495 0.00400394"/>
+					<entry key="rotation" type="quaternion" value="0 0 0 -1"/>
+					<entry key="task_id" type="string" value="DownloadData"/>
+					<entry key="task_type" type="string" value="short"/>
+					<entry key="toggle" type="string" value="on"/>
 					<entry key="trigger_times" type="number" value="0"/>
 					<entry key="tweak_data_id" type="string" value="answer_call"/>
 				</entry>
