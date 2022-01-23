@@ -52,7 +52,7 @@ function AmongUs.TweakData:init()
             },
             Wires = {
                 id = "Wires",
-                location = "Weapons",
+                location = {"Weapons", "Security", "Admin"},
                 name = "Wires",
                 progress = 0,
                 max_progress = 3,

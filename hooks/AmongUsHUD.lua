@@ -151,7 +151,13 @@ function HUDAMONGUS:create_task_text(task_type, task_name, task_table)
     self._task_text = self._task_text or {}
     self._lazy_amount = self._lazy_amount and self._lazy_amount + 1 or 1
     --log(tprint(task_table))
-    local text = task_table.location .. ": " .. task_table.name .. " (" .. task_table.progress .. "/" .. task_table.max_progress .. ")"
+
+    local location = task_table.location
+    if type(location) == "table" then
+        location = location[task_table.progress + 1]
+    end
+    log(tostring(location) .. " " .. tostring(task_table.progress))
+    local text = location .. ": " .. task_table.name .. " (" .. task_table.progress .. "/" .. task_table.max_progress .. ")"
 
     self._task_text[self._lazy_amount] = self._task_panel:text({
         name = "task_text" .. self._lazy_amount,
@@ -192,6 +198,10 @@ function HUDAMONGUS:update_task_text(task)
     if self._task_panel:w() - 16 < w then
         self._task_panel:set_w(w + 16)
     end
-    task.text_id:set_text(task.location .. ": " .. task.name .. " (" .. task.progress .. "/" .. task.max_progress .. ")")
+    local location = task.location
+    if type(location) == "table" then
+        location = location[task.progress + 1]
+    end
+    task.text_id:set_text(location .. ": " .. task.name .. " (" .. task.progress .. "/" .. task.max_progress .. ")")
     task.text_id:set_color(Color.yellow)
 end
