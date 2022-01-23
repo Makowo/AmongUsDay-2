@@ -2,6 +2,8 @@ Wires = Wires or class()
 
 function Wires:init(parent, ...)
     self._wires = {}
+    self._pressed = {}
+    self._colors = {"red", "green", "blue", "yellow"}
     self._parent = parent
     self._menu = MenuUI:new({
         name = "Wires",
@@ -53,18 +55,11 @@ function Wires:init(parent, ...)
     })
 
     local function MouseMoved(o, x, y)
-        --log("MouseMoved x:" .. tostring(x) .. " " .. tostring(y))
-        if o:Inside(x, y) then
-            local pnlx, pnly = self._game:Panel():world_position()
-            --log("pnlx:" .. tostring(pnlx) .. " " .. tostring(pnly))
-            local rotX = pnlx - x
-            local rotY = pnly - y
-            local rot = math.atan2(rotY, rotX) + 180
-            --log("rot: " .. tostring(rot))
-            --local x, y = x - pnlx, y - pnly
-            --local x = math.floor(x / w)
-            if self._pressed then
-                self:drawline(pnlx, pnly, x, y, rot)
+        if self._game:Inside(x, y) then
+            local pnlx, pnly = o:Panel():world_position()
+            local tbl = self._pressed[o:Name()]
+            if tbl and tbl.state then
+                self:drawline(pnlx, pnly, x, y, tbl.pos, tbl.color)
             else
                 self:destroyline()
             end
@@ -74,7 +69,8 @@ function Wires:init(parent, ...)
 
     local function MousePressed(o, b, x, y)
         if b == Idstring("0") then
-            self._pressed = true
+            log(tostring(o:Name()))
+            --self._pressed[o:Name()] = true
         end
         if self.menu_type and o:MousePressedMenuEvent(b, x, y) then
             return true
@@ -85,7 +81,12 @@ function Wires:init(parent, ...)
 
     local function MouseReleased(o, b, x, y)
         if b == Idstring("0") then
-            self._pressed = false
+            log(tostring(o:Name()))
+            local state = self._pressed[o:Name()] and self._pressed[o:Name()].state
+            if state and self._WireRight:Inside(x,y) then
+                log("released right")
+            end
+            self._pressed[o:Name()] = {state = false, pos = 0, color = nil}
         end
         if o.menu_type then
             if not o.menu._highlighted then
@@ -97,34 +98,64 @@ function Wires:init(parent, ...)
                 end
             end
         end
-    
+
         if o._list then
             o._list:MouseReleased(b, x, y)
         end
     end
 
-    if self._game.MouseMoved then
-        self._game.MouseMoved = MouseMoved
-        self._game.MousePressed = MousePressed
-        self._game.MouseReleased = MouseReleased
-    end
+    self._WireLeft = {}
+    local i = 1
+    local color = math.random(#self._colors)
+    table.remove(self._colors, color)
+    local name = "WireLeft" .. i
+    local pos = math.random(self._game:H())
+    self._WireLeft[i] = self._game:ImageButton({
+        name = name,
+        layer = 2,
+        texture = "guis/textures/pd2/endscreen/exp_ring",
+        texture_rect = {0, 0, 256, 256},
+        w = 64,
+        h = 64,
+        img_color = Color[self._colors[color]],
+        position = function(item)
+            item:SetCenter(32, pos)
+        end,
+        on_callback = ClassClbk(self, "update", name, pos, color)
+    })
+    local otherpos = math.random(self._game:H())
+    self._WireRight = self._game:Image({
+        name = "WireRight",
+        layer = 2,
+        texture = "guis/textures/pd2/endscreen/exp_ring",
+        texture_rect = {0, 0, 256, 256},
+        w = 64,
+        h = 64,
+        img_color = Color[self._colors[color]],
+        position = function(item)
+            item:SetCenter(self._game:W()-32, otherpos)
+        end,
+    })
 
+    self._WireLeft[i].MouseMoved = MouseMoved
+    self._WireLeft[i].MousePressed = MousePressed
+    self._WireLeft[i].MouseReleased = MouseReleased
 
     --BeardLib:AddUpdater("AmongUsMinigame", ClassClbk(self, "update"))
     --self._menu:SetEnabled(true)
 end
---self:drawline(pnlx, pnly, x, y, rot)
-function Wires:drawline(x, y, x2, y2, rot)
+--self:drawline(pnlx, pnly, x, y)
+function Wires:drawline(x, y, x2, y2, pos, color)
     if self.Wires then self:destroyline() end
+    local rotX = x - x2
+    local rotY = y - y2
+    local rot = math.atan2(rotY, rotX) + 180
     for i = 1, 20, 1 do
-        local x1 = math.abs((x - x2) * (i / 22))
-        local y1 = math.abs((y - y2) * (i / 22))
-        local y3 = math.abs((y2 - y)*(i*0.01))
-        local x3 = math.abs((x2 - x)*(i*0.01))
-        --log(tostring(x1) .. " " .. tostring(y1))
-        --log("drawline" .. tostring(i))
-        if y3 then
-            self.Wires[i] = WiresObject:new(self, x1, y1, rot)
+        local x1 = math.abs((rotX) * (i / 22) - 32)
+        local y1 = math.abs((rotY) * (i / 22) - pos)
+
+        if y1 and x1 then
+            self.Wires[i] = WiresObject:new(self, x1, y1, rot, color)
         end
     end
 end
@@ -147,12 +178,7 @@ function Wires:on_minigame_finished()
     self:Destroy()
 end
 
-
 function Wires:CreateObjects()
-    self._asteroidnum = self._asteroidnum or math.random(3,7)
-    for i = 1, self._asteroidnum, 1 do
-        self._wires[i] = WiresObject:new(self, i)
-    end
 end
 
 function Wires:Destroy()
@@ -175,25 +201,25 @@ function Wires:VentDestroy(vent_num)
 end
 
 --will be used to update the asteroids flying around
-function Wires:update(t, dt)
-    for _, asteroid in pairs(self._asteroids) do
-        asteroid:update(t, dt)
-    end
+function Wires:update(o, pos, color)
+    self._pressed[o] = {state = true, pos = pos, color = color}
 end
 
 WiresObject = WiresObject or class()
 
 --initialize the wires object
-function WiresObject:init(parent, x, y, rot)
+function WiresObject:init(parent, x, y, rot, color)
     self._parent = parent
+    self._colors = {"red", "green", "blue", "yellow"}
     --TODO: randomize texture
+    --log("object:" .. tostring(x) .. " " .. tostring(y))
     self._wires = self._parent._game:Image({
         name = "Wires",
         texture = "pd2_mod_amongus/red_wire",
         texture_rect = {0, 0, 32, 32},
         w = 64,
         h = 16,
-        color = Color(1, 1, 1),
+        img_color = Color[self._colors[color]],
         alpha = 1,
         visible = true,
         layer = 1,
@@ -202,7 +228,6 @@ function WiresObject:init(parent, x, y, rot)
         end
     })
     self._wires.img:set_rotation(rot)
-    --self._wires:SetCenter(x - 32, y - 32)
 end
 
 --destroy the wires object
