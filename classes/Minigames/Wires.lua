@@ -114,7 +114,6 @@ function Wires:CreateObjects()
         if b == Idstring("0") then
             local state = self._pressed[o:Name()] and self._pressed[o:Name()].state
             if state and self._WireRight:Inside(x,y) then
-                log("released right")
                 self:CompleteStep()
             end
             self:destroyline()

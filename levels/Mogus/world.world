@@ -43,6 +43,10 @@
 		</entry>
 	</entry>
 	<entry key="camera_bookmarks" type="table">
+		<entry key="debug" type="table">
+			<entry key="position" type="vector3" value="943.906 7515.16 895.703"/>
+			<entry key="rotation" type="quaternion" value="-0.00823303 -0.238827 0.970451 0.0334542"/>
+		</entry>
 	</entry>
 	<entry key="environment" type="table">
 		<entry key="cubemap_gizmos" type="table">

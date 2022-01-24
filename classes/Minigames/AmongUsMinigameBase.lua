@@ -85,7 +85,6 @@ function Asteroids:CreateAsteroid()
 end
 
 function Asteroids:Destroy()
-    log("destroy")
     BeardLib:RemoveUpdater("AmongUsMinigame")
     self._menu:Destroy()
     self._asteroids = nil
@@ -271,8 +270,7 @@ end
 function CleanVent:VentDestroy(vent_num)
     self._cleanvent[vent_num]:Destroy()
     self._cleanvent[vent_num] = nil
-    PrintTable(self._cleanvent)
-    log(tostring(#self._cleanvent) .. " asteroids left")
+
     if table.size(self._cleanvent) == 0 then
         local player_id = managers.network:session():local_peer():id()
         local completed = AmongUs.GM:progress_task(player_id, "short", "CleanVent")

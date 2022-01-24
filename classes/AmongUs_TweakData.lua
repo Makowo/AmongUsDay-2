@@ -62,7 +62,7 @@ function AmongUs.TweakData:init()
             DownloadData = {
                 id = "DownloadData",
                 location = {"Weapons", "Security"},
-                name = "DownloadData",
+                name = {"Download Data", "Upload Data"},
                 progress = 0,
                 max_progress = 2,
                 text_id = "nil",

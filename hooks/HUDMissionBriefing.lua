@@ -1,5 +1,4 @@
 Hooks:PostHook(HUDMissionBriefing, "set_player_slot", "AmongUs_HudMission_Briefing", function(self, nr, params)
-    PrintTable(params)
     local current_name = params.name
     local peer_id = params.peer_id
     local peer_data = managers.network and managers.network:session() and managers.network:session():peer(peer_id)

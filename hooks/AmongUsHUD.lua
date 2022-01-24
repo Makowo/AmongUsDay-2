@@ -138,7 +138,6 @@ function HUDAMONGUS:update_task_panel()
 
     for task_type, amount in pairs(player_tasks) do
         for task_name, task_tbl in pairs(player_tasks[task_type]) do
-            log(tostring(task_name) .. " " .. tostring(task_tbl))
             if type(task_tbl) == "table" then
                 self:create_task_text(task_type, task_name, task_tbl)
             end
@@ -156,8 +155,13 @@ function HUDAMONGUS:create_task_text(task_type, task_name, task_table)
     if type(location) == "table" then
         location = location[task_table.progress + 1]
     end
-    log(tostring(location) .. " " .. tostring(task_table.progress))
-    local text = location .. ": " .. task_table.name .. " (" .. task_table.progress .. "/" .. task_table.max_progress .. ")"
+
+    local name = task_table.name
+    if type(name) == "table" then
+        name = name[task_table.progress + 1] or name[task_table.progress]
+    end
+
+    local text = location .. ": " .. name .. " (" .. task_table.progress .. "/" .. task_table.max_progress .. ")"
 
     self._task_text[self._lazy_amount] = self._task_panel:text({
         name = "task_text" .. self._lazy_amount,
@@ -174,8 +178,6 @@ function HUDAMONGUS:create_task_text(task_type, task_name, task_table)
     })
     --Store the text so we can update it later
     task_table.text_id = self._task_text[self._lazy_amount]
-
-    log(tostring(AmongUs.GM._players[managers.network:session():local_peer():id()].tasks[task_type][task_name].text_id))
 
     --thx shiny hoppip for :text_rect()
     local x, y, w, h = self._task_text[self._lazy_amount]:text_rect()
@@ -194,14 +196,19 @@ end
 
 function HUDAMONGUS:update_task_text(task)
     local x, y, w, h = task.text_id:text_rect()
-    log(tostring(w).. " " .. tostring(self._task_panel:w()))
+
     if self._task_panel:w() - 16 < w then
         self._task_panel:set_w(w + 16)
     end
     local location = task.location
     if type(location) == "table" then
-        location = location[task.progress + 1]
+        location = location[task.progress + 1] or location[task.progress]
     end
-    task.text_id:set_text(location .. ": " .. task.name .. " (" .. task.progress .. "/" .. task.max_progress .. ")")
+    local name = task.name
+    if type(name) == "table" then
+        name = name[task.progress + 1] or name[task.progress]
+    end
+
+    task.text_id:set_text(location .. ": " .. name .. " (" .. task.progress .. "/" .. task.max_progress .. ")")
     task.text_id:set_color(Color.yellow)
 end

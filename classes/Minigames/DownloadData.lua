@@ -71,13 +71,20 @@ function DownloadData:init(parent, ...)
         on_callback = ClassClbk(self, "Destroy")
     })
 
+    --Set task to upload if progress is 1
+    self._peerid = managers.network:session():local_peer():id()
+    self._taskprogress = AmongUs.GM:get_task_progress(self._peerid, "short", "DownloadData")
+
+    if self._taskprogress == 1 then
+        self._download:SetText("Upload")
+    end
     --self._menu:SetEnabled(true)
 end
 
 
 --create a callback for when the minigame is finished successfully
 function DownloadData:on_minigame_finished()
-    AmongUs.GM:progress_task(managers.network:session():local_peer():id(), "short", "DownloadData")
+    AmongUs.GM:progress_task(self._peerid, "short", "DownloadData")
     self._parent:_on_executed()
     self:Destroy()
 end
@@ -126,7 +133,7 @@ function DownloadData:update(t, dt)
 end
 --create a text object to display the that the download has finished
 function DownloadData:downloadfinished()
-    self._game:Divider({
+    local div = self._game:Divider({
         name = "downloadfinished",
         text = "Download Finished",
         font = "fonts/escom_outline",
@@ -139,6 +146,9 @@ function DownloadData:downloadfinished()
             item:SetCenter(self._game:W() / 2, self._game:H() / 2)
         end
     })
+    if self._taskprogress == 1 then
+        div:SetText("Upload Finished")
+    end
 end
 
 function DownloadData:Destroy()

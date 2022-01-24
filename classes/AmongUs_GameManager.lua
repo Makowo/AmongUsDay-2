@@ -44,17 +44,15 @@ function AmongUs.GM:_assign_tasks(player_id)
     --incase _create_new_player is called more than once for the same player.
     --common is called last, so it ensures they are all assigned.
     if #player.tasks.common >= tasks_amounts.common then
-        log("common tasks assigned")
         return
     end
 
     --Creates a table of the keys, selects one randomly, removes it from the key table and adds the task to the player. cursed, i know.
     for task_type, amount in pairs(AmongUs._tasks) do
         if #table.map_keys(player.tasks[task_type]) >= tasks_amounts[task_type] then
-            log("tasks assigned for " .. tostring(task_type))
             return
         end
-        log(tostring(amount))
+
         local fuckihatetables = table.map_keys(tasks_table[task_type])
         for i = 1, amount, 1 do
             local random = math.random(#fuckihatetables)
@@ -110,4 +108,24 @@ function AmongUs.GM:progress_task(player_id, task_type, task_id)
         end
         return true
     end
+end
+
+--get progress of a task for a player
+function AmongUs.GM:get_task_progress(player_id, task_type, task_id)
+    local player = self._players[player_id]
+    if not player.tasks[task_type][task_id] then
+        log("[AmongUs.GM][ERROR] Task " .. task_id .. " does not exist for player " .. player_id .. ".")
+        return
+    end
+    return player.tasks[task_type][task_id].progress
+end
+
+--get a task of a player
+function AmongUs.GM:get_task(player_id, task_type, task_id)
+    local player = self._players[player_id]
+    if not player.tasks[task_type][task_id] then
+        log("[AmongUs.GM][ERROR] Task " .. task_id .. " does not exist for player " .. player_id .. ".")
+        return
+    end
+    return player.tasks[task_type][task_id]
 end

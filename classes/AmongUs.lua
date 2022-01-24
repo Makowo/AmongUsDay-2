@@ -1,7 +1,6 @@
 AmongUs = AmongUs or class()
 
 function AmongUs:init(custom_rules)
-    log("AmongUs:init()")
     local rules = {
         impostor_count = custom_rules and custom_rules.impostor_count or 1,
         kill_cooldown = custom_rules and custom_rules.kill_cooldown or 30,
@@ -42,7 +41,7 @@ PrintTable(AmongUs)
 end
 
 function AmongUs:_init_rules(rules)
-    log("AmongUs:_init_rules()")
+
     self._tasks = {
         short = rules.short_tasks, --Amount of short tasks
         long = rules.long_tasks, --Amount of long tasks
@@ -66,15 +65,15 @@ function AmongUs:_init_rules(rules)
         kill_cooldown = rules.kill_cooldown, --Cooldown between killing players (in seconds)
         player_speed_multiplier = rules.player_speed_multiplier --Speed multiplier for players
     }
-    log("Self TASKS: ")
-    PrintTable(AmongUs._tasks)
+
+
 end
 
 function AmongUs:_init_hooks()
 
     local map = BeardLib.Frameworks.Map:GetModByName("Mogus")
     local mod_path = map:GetPath()
-    log(tostring(mod_path))
+
 
     self._hooks = {
         "classes/AmongUs_TweakData",
